@@ -1,23 +1,23 @@
-FSND capstone project 
+# FSND capstone project 
 
 
-synopsis:
+## synopsis:
 
 the application consists in the creation of a user account where there is all information concerning a potential customer
 
 Getting Started:
 
-Installing Dependencies:
+## Installing Dependencies:
 
 Python 3.7
 
-create and activate a virtual envirnment:
+#### create and activate a virtual envirnment:
 
 virtualenv -p python3 env
 
 source env/scripts/activate 
 
-PIP Dependencies:
+#### PIP Dependencies:
 
 pip install -r requirements.txt
 
@@ -25,13 +25,13 @@ Running the app:
 
 python app.py
 
-Models 
+## Models 
 
 account and address
 
-Roles and permissions:
+#### Roles and permissions:
 
-administrator
+* administrator
 
 delete:account	delete an existing account		
 
@@ -54,7 +54,7 @@ post:account	create new account
 post:address	create address		
 
 
-customer
+* customer
 
 delete:address	delete address	Account	
 
@@ -70,10 +70,9 @@ post:account	create new account	Account
 
 post:address	create address	Account	
 
-Endpoints :
-
-
-POST ('/account', json={ "first_name":"my_first_name", "last_name":"my_last_name", "email":"my_email@live.com", "phone":"23852698" }, headers = administrator_auth_header)
+## Endpoints :
+```
+POST  ('/account', json={ "first_name":"my_first_name", "last_name":"my_last_name", "email":"my_email@live.com", "phone":"23852698" }, headers = administrator_auth_header) 
 
 
 {'created_account': {'email': 'my_email@live.com', 'first_name': 'my_first_name', 'id': 1, 'last_name': 'my_last_name', 'phone': '23852698'}, 'success': True}
@@ -121,7 +120,11 @@ DELETE ('/account/1', headers = administrator_auth_header)
 {'deleted_id': 1, 'success': True}
 
 
+```
 
-Testing
+
+
+
+## Testing
 
 Python test_app.py
