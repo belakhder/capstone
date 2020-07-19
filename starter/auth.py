@@ -145,7 +145,7 @@ def requires_auth(permission=''):
             except:
                 raise AuthError({
                     'code': 'unauthorized',
-                    'description': 'Permissions not found'
+                    'description': 'Permission not found.'
                 }, 401)
             check_permissions(permission, payload)
             return f(payload, *args, **kwargs)
