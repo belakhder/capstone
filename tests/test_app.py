@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-print((os.getenv('administrator_auth'))
+
 class AccountTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -35,6 +35,8 @@ class AccountTestCase(unittest.TestCase):
      
 
     def test_01_create_new_account(self):
+        print((os.getenv('administrator_auth'))
+        print('hello')
         response =self.client().post('/account', 
             json={
                 "first_name":"my_first_name",
