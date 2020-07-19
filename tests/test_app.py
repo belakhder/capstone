@@ -48,8 +48,6 @@ class AccountTestCase(unittest.TestCase):
             headers = self.administrator_auth_header)
         data = json.loads(response.data)
         
-        
-
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['created_account'])
         self.assertTrue(data['created_account']['first_name'])
@@ -74,7 +72,6 @@ class AccountTestCase(unittest.TestCase):
 
         data = json.loads(response.data)
         
-
         self.assertEqual(response.status_code, 400)
         self.assertEqual(data['message'], 'bad request')
         self.assertEqual(data['success'], False)
@@ -100,14 +97,9 @@ class AccountTestCase(unittest.TestCase):
 
         data = json.loads(response.data)
 
-        
-
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['info_accounts'])
         self.assertTrue(data['number of subscribers'])
-
-  
-       
 
     def test_06_get_account(self):
         ''' test get one account'''
@@ -115,8 +107,6 @@ class AccountTestCase(unittest.TestCase):
             headers = self.administrator_auth_header)
 
         data = json.loads(response.data)
-
-        
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['info_account'])
@@ -126,6 +116,7 @@ class AccountTestCase(unittest.TestCase):
         response = self.client().get('/account/100',
         headers = self.administrator_auth_header)
         data = json.loads(response.data)
+
         self.assertEqual(response.status_code, 404)
         self.assertEqual(data['message'], 'resource not found')
         self.assertEqual(data['success'], False)
@@ -140,6 +131,7 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['updated_account'])
         self.assertTrue(data['success'])
+
     def test_09_patch_account_non_valid_type(self):
         """test account update failure due to non_valid_type"""
         response = self.client().patch('/account/1',
@@ -158,8 +150,6 @@ class AccountTestCase(unittest.TestCase):
 
         data = json.loads(response.data)
 
-        
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(data['deleted_id'],1)
@@ -168,16 +158,14 @@ class AccountTestCase(unittest.TestCase):
         '''test delete deleted account'''
         response = self.client().delete('/account/1',
             headers = self.administrator_auth_header)
-        
-
         data = json.loads(response.data)
+
         self.assertEqual(response.status_code, 404)
         self.assertEqual(data['message'], 'resource not found')
         self.assertEqual(data['success'], False)
 
     def test_02_create_new_address(self):
         '''test creation address success '''
-       
         response =self.client().post('/address', 
             json={"city":"city",
             "postal_code":2000,
@@ -186,10 +174,7 @@ class AccountTestCase(unittest.TestCase):
             "state":"state"
             },
             headers = self.administrator_auth_header)
-            
         data = json.loads(response.data)
-
-        
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['created_address'])
@@ -201,10 +186,9 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(data['created_address']['account_id'],1)
         self.assertEqual(data['created_address']['state'],'state')
     
-    
     def test_10_400_create_new_address_non_valid_type(self):
         '''test creation address failure due due to non valid type '''
-        
+
         response =self.client().post('/address', 
             json={"city":2,
             "postal_code":2000,
@@ -213,39 +197,28 @@ class AccountTestCase(unittest.TestCase):
             "state":"state"
             },
             headers = self.administrator_auth_header)
-
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(data['message'], 'bad request')
         self.assertEqual(data['success'], False)
 
-
     def test_11_get_address(self):
         ''' test get all addresses'''
         response = self.client().get('/address',
             headers = self.administrator_auth_header)
-        
-
         data = json.loads(response.data)
-
-        
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['info_addresses'])
         self.assertTrue(data['number of addreses'])
     
-
     def test_12_get_address(self):
         '''test get one address'''
         address=Address.query.filter_by(account_id=1).one_or_none()
         response = self.client().get('/address/{}'.format(address.id),
             headers = self.administrator_auth_header)
-
-
         data = json.loads(response.data)
-
-        
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['info_address'])
@@ -260,27 +233,20 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_14_patch_address(self):
-
         """test address update success"""
-
         address=Address.query.filter_by(account_id=1).one_or_none()
         response = self.client().patch('/address/{}'.format(address.id),
             json={"first_name":"my_first_name2","last_name":"my_last_name2"},
             headers = self.administrator_auth_header)
         data = json.loads(response.data)
 
-        
-        
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['updated_address'])
         self.assertTrue(data['success'])
     
-
     def test_15_patch_address_non_valid_type(self):
-
         """test address update failure due to non_valid_type"""
         address=Address.query.filter_by(account_id=1).one_or_none()
-    
         response = self.client().patch('/address/{}'.format(address.id),json={
             "city":2,
             "postal_code":2002,
@@ -291,7 +257,6 @@ class AccountTestCase(unittest.TestCase):
             headers = self.administrator_auth_header)
         data = json.loads(response.data)
 
-     
         self.assertEqual(response.status_code, 400)
         self.assertEqual(data['message'], 'bad request')
         self.assertEqual(data['success'], False)
@@ -299,10 +264,8 @@ class AccountTestCase(unittest.TestCase):
 
     def test_17_delete_account_without_permission(self):
         ''' test delete address without deletion permission '''
-        
         response = self.client().delete('/account/1',
             headers = self.customer_auth_header)
-
         data = json.loads(response.data)
         
         self.assertEqual(response.status_code, 401)
@@ -311,7 +274,6 @@ class AccountTestCase(unittest.TestCase):
     def test_18_delete_account_without_authorization(self):
         '''test delete account without authorisation'''
         response = self.client().delete('/account/1')
-
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
