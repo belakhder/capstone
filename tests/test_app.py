@@ -33,7 +33,7 @@ class AccountTestCase(unittest.TestCase):
             #create all tables
             self.db.create_all()
        
-        """Executed after each test"""
+    
      
 
     def test_01_create_new_account(self):
@@ -94,7 +94,9 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_05_get_accounts(self):
-        response = self.client().get('/account',headers = self.administrator_auth_header)
+        ''' test get all accounts'''
+        response = self.client().get('/account',
+            headers = self.administrator_auth_header)
 
         data = json.loads(response.data)
 
@@ -108,6 +110,7 @@ class AccountTestCase(unittest.TestCase):
        
 
     def test_06_get_account(self):
+        ''' test get one account'''
         response = self.client().get('/account/1',
             headers = self.administrator_auth_header)
 
@@ -119,43 +122,37 @@ class AccountTestCase(unittest.TestCase):
         self.assertTrue(data['info_account'])
 
     def test_07_404_get_account(self):
-         response = self.client().get('/account/100',
-            headers = self.administrator_auth_header)
-         data = json.loads(response.data)
-         self.assertEqual(response.status_code, 404)
-         self.assertEqual(data['message'], 'resource not found')
-         self.assertEqual(data['success'], False)
+        '''test get unexisting account'''
+        response = self.client().get('/account/100',
+        headers = self.administrator_auth_header)
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(data['message'], 'resource not found')
+        self.assertEqual(data['success'], False)
 
     def test_08_patch_account(self):
-
-        """test account update success"""
-
-        
+        '''test account update success'''
         response = self.client().patch('/account/1',
             json={"first_name":"my_first_name2","last_name":"my_last_name2"},
             headers = self.administrator_auth_header)
         data = json.loads(response.data)
 
-        
-     
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['updated_account'])
         self.assertTrue(data['success'])
     def test_09_patch_account_non_valid_type(self):
-
         """test account update failure due to non_valid_type"""
-    
         response = self.client().patch('/account/1',
         json={"first_name":"my_first_name2","last_name":2},
             headers = self.administrator_auth_header)
         data = json.loads(response.data)
 
-     
         self.assertEqual(response.status_code, 400)
         self.assertEqual(data['message'], 'bad request')
         self.assertEqual(data['success'], False)
 
     def test_21_delete_account(self):
+        ''' test delete account success'''
         response = self.client().delete('/account/1',
             headers = self.administrator_auth_header)
 
@@ -168,6 +165,7 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(data['deleted_id'],1)
 
     def test_22_delete_deleted_account(self):
+        '''test delete deleted account'''
         response = self.client().delete('/account/1',
             headers = self.administrator_auth_header)
         
@@ -178,6 +176,7 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_02_create_new_address(self):
+        '''test creation address success '''
        
         response =self.client().post('/address', 
             json={"city":"city",
@@ -204,6 +203,7 @@ class AccountTestCase(unittest.TestCase):
     
     
     def test_10_400_create_new_address_non_valid_type(self):
+        '''test creation address failure due due to non valid type '''
         
         response =self.client().post('/address', 
             json={"city":2,
@@ -222,6 +222,7 @@ class AccountTestCase(unittest.TestCase):
 
 
     def test_11_get_address(self):
+        ''' test get all addresses'''
         response = self.client().get('/address',
             headers = self.administrator_auth_header)
         
@@ -236,6 +237,7 @@ class AccountTestCase(unittest.TestCase):
     
 
     def test_12_get_address(self):
+        '''test get one address'''
         address=Address.query.filter_by(account_id=1).one_or_none()
         response = self.client().get('/address/{}'.format(address.id),
             headers = self.administrator_auth_header)
@@ -249,6 +251,7 @@ class AccountTestCase(unittest.TestCase):
         self.assertTrue(data['info_address'])
 
     def test_13_404_get_address(self):
+        '''test get unexisting address'''
         response = self.client().get('/address/100',
             headers = self.administrator_auth_header)
         data = json.loads(response.data)
@@ -295,6 +298,7 @@ class AccountTestCase(unittest.TestCase):
 
 
     def test_17_delete_account_without_permission(self):
+        ''' test delete address without deletion permission '''
         
         response = self.client().delete('/account/1',
             headers = self.customer_auth_header)
@@ -305,6 +309,7 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Permission not found.')
         self.assertEqual(data['success'], False)
     def test_18_delete_account_without_authorization(self):
+        '''test delete account without authorisation'''
         response = self.client().delete('/account/1')
 
         data = json.loads(response.data)
@@ -314,6 +319,7 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_19_delete_address(self):
+        ''' test deletion address success'''
         address=Address.query.filter_by(account_id=1).one_or_none()
         response = self.client().delete('/address/{}'.format(address.id),
             headers = self.administrator_auth_header)
@@ -324,6 +330,7 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(data['deleted_id'],address.id)
 
     def test_20_delete_unexisting_address(self):
+        '''test delete unexisting address'''
         response = self.client().delete('/address/1',
             headers = self.administrator_auth_header)
 
