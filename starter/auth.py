@@ -132,8 +132,6 @@ def verify_decode_jwt(token):
             }, 400)
 
 
-# TODO DONE implement @requires_auth(permission) decorator method
-
 def requires_auth(permission=''):
 
     def requires_auth_decorator(f):
