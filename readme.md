@@ -72,6 +72,7 @@ post:address	create address	Account
 
 ## Endpoints :
 ```
+
 POST  ('/account', json={ "first_name":"my_first_name", "last_name":"my_last_name", "email":"my_email@live.com", "phone":"23852698" }, headers = administrator_auth_header) 
 
 

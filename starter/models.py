@@ -6,7 +6,7 @@ from flask_marshmallow import Marshmallow
 
 database_filename = "test3"
 
-database_path = "postgresql://postgres:postgres@localhost:5432/test5"
+database_path = "postgres://buvrmfmsgtvagl:9503fc794b269b11630ae53c57d18d05e8b4cb2ba517f9e73fe95dca8e2236eb@ec2-54-234-28-165.compute-1.amazonaws.com:5432/d165f6o5r8qn9q"
 
 db = SQLAlchemy()
 ma = Marshmallow()
