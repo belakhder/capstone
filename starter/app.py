@@ -94,11 +94,10 @@ def create_app(test_config=None):
         else:
             abort(400)
 
-        try:
-            db.session.add(account)
-            db.session.commit()
-        except:
-            abort(422)
+       
+        db.session.add(account)
+        db.session.commit()
+       
 
         output=account_Schema.dump(account)
         return {

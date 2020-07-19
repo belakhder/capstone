@@ -34,7 +34,7 @@ class AccountTestCase(unittest.TestCase):
         self.client = self.app.test_client
         self.database_path = database_path
         setup_db(self.app, self.database_path)
-
+        
 
         with self.app.app_context():
             self.db = SQLAlchemy()
@@ -43,15 +43,11 @@ class AccountTestCase(unittest.TestCase):
             ma.app=self.app
             #create all tables
             self.db.create_all()
-
-    def tearDown(self):
+       
         """Executed after each test"""
      
 
     def test_01_create_new_account(self):
-        account=Account(id=1,first_name="my_first_name_",last_name="my_last_name_",email="my_email@live.com_",phone="23852697")
-        db.session.add(account)
-        db.session.commit()
         response =self.client().post('/account', 
             json={
                 "first_name":"my_first_name",
@@ -78,6 +74,7 @@ class AccountTestCase(unittest.TestCase):
 
     
     def test_03_400_create_new_account_non_valid_type(self):
+
         response =self.client().post('/account', 
             json={'first_name':2,"last_name":"last_name_account","email":"my_email@live.com","phone":"23852698"},
             headers = administrator_auth_header)
@@ -111,7 +108,9 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['info_accounts'])
         self.assertTrue(data['number of subscribers'])
-    
+
+  
+       
 
     def test_06_get_account(self):
         response = self.client().get('/account/1',headers = administrator_auth_header)
@@ -180,18 +179,7 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(data['message'], 'resource not found')
         self.assertEqual(data['success'], False)
-    def test_23_delete_account(self):
-        account=Account.query.filter_by(email='my_email@live.com').one_or_none()
-        response = self.client().delete('/account/{}'.format(account.id),
-            headers = administrator_auth_header)
 
-        data = json.loads(response.data)
-
-        print(data)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted_id'],account.id)
     def test_02_create_new_address(self):
        
         response =self.client().post('/address', 
@@ -347,6 +335,9 @@ class AccountTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
 
+    db.drop_all()
+
+    print('hello')
     
 
 if __name__ == "__main__":
