@@ -45,8 +45,8 @@ class AccountTestCase(unittest.TestCase):
                 },
             headers = self.administrator_auth_header)
         data = json.loads(response.data)
-        print((os.getenv('administrator_auth'))
-        print('data')
+      
+        print(data)
       
         
         
