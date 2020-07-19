@@ -35,8 +35,7 @@ class AccountTestCase(unittest.TestCase):
      
 
     def test_01_create_new_account(self):
-        print((os.getenv('administrator_auth'))
-        print('hello')
+        
         response =self.client().post('/account', 
             json={
                 "first_name":"my_first_name",
@@ -46,6 +45,8 @@ class AccountTestCase(unittest.TestCase):
                 },
             headers = self.administrator_auth_header)
         data = json.loads(response.data)
+        print((os.getenv('administrator_auth'))
+        print('data')
       
         
         
