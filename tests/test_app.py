@@ -44,7 +44,7 @@ class AccountTestCase(unittest.TestCase):
                 },
             headers = self.administrator_auth_header)
         data = json.loads(response.data)
-        print(data)
+        print(self.administrator_auth_header)
         
         
 
