@@ -43,7 +43,7 @@ class AccountTestCase(unittest.TestCase):
                 "phone":"23852698"
                 },
             headers = self.administrator_auth_header)
-        data = json.loads(response.data))
+        data = json.loads(response.data)
         
         
 
