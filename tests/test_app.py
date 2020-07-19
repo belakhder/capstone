@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-
+print((os.getenv('administrator_auth'))
 class AccountTestCase(unittest.TestCase):
 
     def setUp(self):
