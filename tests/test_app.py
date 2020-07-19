@@ -17,8 +17,10 @@ class AccountTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        self.administrator_auth_header = {'Authorization': "Bearer"+" "+ str(os.getenv('administrator_auth'))}
-        self.customer_auth_header = {'Authorization': "Bearer"+" "+ str(os.getenv('customer_auth'))}
+        self.administrator_auth_header = {'Authorization': "Bearer"+" "
+            + str(os.getenv('administrator_auth'))}
+        self.customer_auth_header = {'Authorization': "Bearer"+" "
+            + str(os.getenv('customer_auth'))}
         self.database_path = database_path
         setup_db(self.app, self.database_path)
         
@@ -35,6 +37,7 @@ class AccountTestCase(unittest.TestCase):
      
 
     def test_01_create_new_account(self):
+        ''' account creation success '''
         response =self.client().post('/account', 
             json={
                 "first_name":"my_first_name",
@@ -60,9 +63,13 @@ class AccountTestCase(unittest.TestCase):
 
     
     def test_03_400_create_new_account_non_valid_type(self):
+        ''' creation account failure due to non valide type '''
 
         response =self.client().post('/account', 
-            json={'first_name':2,"last_name":"last_name_account","email":"my_email@live.com","phone":"23852698"},
+            json={'first_name':2,
+                "last_name":"last_name_account",
+                "email":"my_email@live.com",
+                "phone":"23852698"},
             headers = self.administrator_auth_header)
 
         data = json.loads(response.data)
@@ -74,8 +81,10 @@ class AccountTestCase(unittest.TestCase):
 
    
     def test_04_400_create_new_account_non_valid_lenght_40(self):
+        '''creation account failure due to non valid lenght'''
         response =self.client().post('/account', 
-            json={'first_name':"name_accountname_accountname_accountname_accountname_accountname_account","last_name":"last_name_account"},
+            json={'first_name':"name_accountname_accountname_accountname_accountname",
+                "last_name":"last_name_account"},
             headers = self.administrator_auth_header)
 
         data = json.loads(response.data)
@@ -99,7 +108,8 @@ class AccountTestCase(unittest.TestCase):
        
 
     def test_06_get_account(self):
-        response = self.client().get('/account/1',headers = self.administrator_auth_header)
+        response = self.client().get('/account/1',
+            headers = self.administrator_auth_header)
 
         data = json.loads(response.data)
 
@@ -109,7 +119,8 @@ class AccountTestCase(unittest.TestCase):
         self.assertTrue(data['info_account'])
 
     def test_07_404_get_account(self):
-         response = self.client().get('/account/100',headers = self.administrator_auth_header)
+         response = self.client().get('/account/100',
+            headers = self.administrator_auth_header)
          data = json.loads(response.data)
          self.assertEqual(response.status_code, 404)
          self.assertEqual(data['message'], 'resource not found')
@@ -267,7 +278,8 @@ class AccountTestCase(unittest.TestCase):
         """test address update failure due to non_valid_type"""
         address=Address.query.filter_by(account_id=1).one_or_none()
     
-        response = self.client().patch('/address/{}'.format(address.id),json={"city":2,
+        response = self.client().patch('/address/{}'.format(address.id),json={
+            "city":2,
             "postal_code":2002,
             "country":"country2",
             "account_id":1,
