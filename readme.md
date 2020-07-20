@@ -23,7 +23,7 @@ pip install -r requirements.txt
 
 Running the app:
 
-python app.py
+python manage.py run 
 
 ## Models 
 
@@ -128,7 +128,7 @@ DELETE ('/account/1', headers = administrator_auth_header)
 
 ## Testing
 
-Python test_app.py
+python manage.py test
 
 ## Deployed heruko link
 
